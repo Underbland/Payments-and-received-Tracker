@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2457F5">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>Bill tracker</title>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1 data-i18n="title">Bill tracker</h1>
+    <div class="lang" role="group" data-i18n-aria="language" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="lo" aria-pressed="false">ລາວ</button>
+    </div>
+  </header>
+
+  <div class="settings">
+    <span class="status" id="status" data-mode="connecting" role="status"><span class="dot"></span><span id="statusText"></span></span>
+    <span class="acct">
+      <span class="who" id="who" hidden></span>
+      <button class="btn sm" id="acctBtn" hidden></button>
+    <select id="currency" class="small" data-i18n-aria="currency" aria-label="Currency">
+      <option value="USD">USD ($)</option>
+      <option value="LAK">LAK (₭)</option>
+      <option value="THB">THB (฿)</option>
+      <option value="EUR">EUR (€)</option>
+      <option value="GBP">GBP (£)</option>
+      <option value="VND">VND (₫)</option>
+    </select>
+    </span>
+  </div>
+
+  <div class="warn" id="warn" role="alert" hidden></div>
+
+  <section class="summary" id="summary" aria-live="polite"></section>
+
+  <div class="bar">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tabTopay" aria-selected="true" data-tab="topay"></button>
+      <button class="tab" role="tab" id="tabPaid" aria-selected="false" data-tab="paid"></button>
+      <button class="tab" role="tab" id="tabHistory" aria-selected="false" data-tab="history"></button>
+    </div>
+    <div class="bar-right">
+      <span id="sortWrap" class="bar-right">
+        <label for="sort" data-i18n="order_by">Order by</label>
+        <select id="sort" class="small">
+          <option value="priority" data-i18n="sort_priority">Priority</option>
+          <option value="due" data-i18n="sort_due">Due date</option>
+          <option value="amount" data-i18n="sort_amount">Amount</option>
+        </select>
+      </span>
+      <button class="btn primary add" id="addBtn" disabled></button>
+    </div>
+  </div>
+  <p class="hint" id="hint"></p>
+
+  <ul class="list" id="list"></ul>
+</div>
+
+<!-- Bill form -->
+<dialog id="billDlg">
+  <form class="dlg" id="billForm" novalidate>
+    <h2 id="billTitle"></h2>
+    <div class="field">
+      <label for="fName" data-i18n="f_from">Bill from</label>
+      <input type="text" id="fName" maxlength="80" data-i18n-ph="f_from_ph">
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label for="fAmount" data-i18n="f_amount">Amount</label>
+        <input type="number" id="fAmount" min="0" step="any" inputmode="decimal">
+      </div>
+      <div class="field">
+        <label for="fCat" data-i18n="f_cat">Category</label>
+        <input type="text" id="fCat" list="cats" maxlength="40">
+        <datalist id="cats"></datalist>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label for="fReceived" data-i18n="f_received">Received on</label>
+        <input type="date" id="fReceived">
+      </div>
+      <div class="field">
+        <label for="fDue" data-i18n="f_due">Due on</label>
+        <input type="date" id="fDue">
+      </div>
+    </div>
+    <div class="field">
+      <label for="fPri" data-i18n="f_pri">Priority</label>
+      <select id="fPri">
+        <option value="high" data-i18n="pri_high_opt">High: must pay</option>
+        <option value="medium" data-i18n="pri_medium" selected>Medium</option>
+        <option value="low" data-i18n="pri_low_opt">Low: can wait</option>
+      </select>
+    </div>
+    <div class="row2" id="paidFields" hidden>
+      <div class="field">
+        <label for="fPaid" data-i18n="f_paid">Paid on</label>
+        <input type="date" id="fPaid">
+      </div>
+      <div class="field">
+        <label for="fBank" data-i18n="pay_with">Paid with</label>
+        <select id="fBank" class="bank-select"></select>
+      </div>
+    </div>
+    <div class="field">
+      <label for="fNote" data-i18n="f_note">Note (optional)</label>
+      <input type="text" id="fNote" maxlength="200" data-i18n-ph="f_note_ph">
+    </div>
+    <p class="err-msg" id="billErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="button" class="btn" data-close="billDlg" data-i18n="cancel">Cancel</button>
+      <button type="submit" class="btn primary" data-i18n="save">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Mark as paid -->
+<dialog id="payDlg">
+  <form class="dlg" id="payForm" novalidate>
+    <h2 data-i18n="pay_title">Mark as paid</h2>
+    <p class="meta" id="payFor" style="margin:0 0 12px"></p>
+    <div class="row2">
+      <div class="field">
+        <label for="pPaidOn" data-i18n="f_paid">Paid on</label>
+        <input type="date" id="pPaidOn">
+      </div>
+      <div class="field">
+        <label for="pBank" data-i18n="pay_with">Paid with</label>
+        <select id="pBank" class="bank-select"></select>
+      </div>
+    </div>
+    <p class="err-msg" id="payErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="button" class="btn" data-close="payDlg" data-i18n="cancel">Cancel</button>
+      <button type="submit" class="btn primary" data-i18n="pay_confirm">Confirm payment</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Money in / out entry -->
+<dialog id="txDlg">
+  <form class="dlg" id="txForm" novalidate>
+    <h2 id="txTitle"></h2>
+    <input type="hidden" id="xRef">
+    <details class="paste" id="ocrBox">
+      <summary data-i18n="ocr_sum">Read from a screenshot</summary>
+      <p data-i18n="ocr_hint"></p>
+      <input type="file" id="xImage" accept="image/*" multiple>
+      <button type="button" class="btn sm" id="ocrBtn" data-i18n="ocr_btn" style="margin-top:8px">Read screenshot</button>
+      <p class="paste-note" id="ocrNote" role="status"></p>
+    </details>
+    <details class="paste" id="pasteBox">
+      <summary data-i18n="paste_sum">Fill from a bank message</summary>
+      <p data-i18n="paste_hint">Paste the notification or SMS from your bank app. It is read on this page only and is not saved.</p>
+      <textarea id="xPaste"></textarea>
+      <button type="button" class="btn sm" id="pasteBtn" data-i18n="paste_btn" style="margin-top:8px">Fill the form</button>
+      <p class="paste-note" id="pasteNote" role="status"></p>
+    </details>
+    <div class="row2">
+      <div class="field">
+        <label for="xDir" data-i18n="tx_type">Type</label>
+        <select id="xDir">
+          <option value="out" data-i18n="tx_out">Money paid</option>
+          <option value="in" data-i18n="tx_in">Money received</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="xAmount" data-i18n="f_amount">Amount</label>
+        <input type="number" id="xAmount" min="0" step="any" inputmode="decimal">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label for="xBank" data-i18n="tx_bank">Bank app</label>
+        <select id="xBank" class="bank-select"></select>
+      </div>
+      <div class="field">
+        <label for="xDate" data-i18n="tx_date">Date</label>
+        <input type="date" id="xDate">
+      </div>
+    </div>
+    <div class="field">
+      <label for="xNote" data-i18n="f_note">Note (optional)</label>
+      <input type="text" id="xNote" maxlength="200" data-i18n-ph="tx_note_ph">
+    </div>
+    <p class="err-msg" id="txErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="button" class="btn" data-close="txDlg" data-i18n="cancel">Cancel</button>
+      <button type="submit" class="btn primary" data-i18n="save">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Review entries found in a screenshot or pasted statement -->
+<dialog id="impDlg">
+  <form class="dlg" id="impForm" novalidate>
+    <h2 id="impTitle"></h2>
+    <p class="meta" data-i18n="imp_hint" style="margin:0 0 12px"></p>
+    <div class="warn" id="impCur" hidden></div>
+    <ul class="list" id="impList"></ul>
+    <div class="dlg-actions">
+      <button type="button" class="btn" data-close="impDlg" data-i18n="cancel">Cancel</button>
+      <button type="submit" class="btn primary" id="impAdd"></button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Sign in -->
+<dialog id="signDlg">
+  <div class="dlg">
+    <h2 data-i18n="sign_title">Sign in</h2>
+    <p class="meta" data-i18n="sign_hint" style="margin:0 0 14px"></p>
+    <button type="button" class="btn signbtn" id="signGoogle" data-i18n="sign_google">Continue with Google</button>
+    <button type="button" class="btn signbtn" id="signFacebook" data-i18n="sign_facebook">Continue with Facebook</button>
+    <p class="err-msg" id="signErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="button" class="btn" data-close="signDlg" data-i18n="cancel">Cancel</button>
+    </div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

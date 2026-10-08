@@ -1,0 +1,17 @@
+// 1) Create a Firebase project (https://console.firebase.google.com).
+// 2) Project settings -> Your apps -> add a Web app -> copy its settings here.
+// These values are not secret. Your data is protected by firestore.rules and by sign-in.
+// While the values below still say PASTE, the app works without sign-in and keeps data on the device only.
+export const firebaseConfig = {
+  apiKey: 'PASTE_API_KEY',
+  authDomain: 'PASTE_PROJECT_ID.firebaseapp.com',
+  projectId: 'PASTE_PROJECT_ID',
+  storageBucket: 'PASTE_PROJECT_ID.firebasestorage.app',
+  messagingSenderId: 'PASTE_SENDER_ID',
+  appId: 'PASTE_APP_ID'
+};
+
+// Sign-in buttons to show. Add 'facebook' after you set Facebook up (see README, step 6).
+export const providers = ['google'];
+
+export const cloudEnabled = !!firebaseConfig.apiKey && !String(firebaseConfig.apiKey).startsWith('PASTE');

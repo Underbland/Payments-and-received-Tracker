@@ -1,0 +1,11 @@
+{
+  "appId": "com.billtracker.app",
+  "appName": "Bill tracker",
+  "webDir": "dist",
+  "plugins": {
+    "FirebaseAuthentication": {
+      "skipNativeAuth": true,
+      "providers": ["google.com", "facebook.com"]
+    }
+  }
+}

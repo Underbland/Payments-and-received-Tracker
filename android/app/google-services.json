@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "273579098723",
+    "project_id": "bill-tracker-projects",
+    "storage_bucket": "bill-tracker-projects.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273579098723:android:cd82ffa6b04e51e2516e56",
+        "android_client_info": {
+          "package_name": "com.billstracker.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBd_RQj0rmtFN5rwlF4r4Isegfd9w_Kt50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273579098723:android:877af763d3e4f1fd516e56",
+        "android_client_info": {
+          "package_name": "com.billtracker.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBd_RQj0rmtFN5rwlF4r4Isegfd9w_Kt50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
