@@ -468,18 +468,31 @@ function onData(bills, txs, settings) {
   renderAll();
   if (wasFirst && store.mode === 'db') migrateLocal(bills.concat(txs));
 }
-// First sign-in on a device: move what was saved on the device into the account.
-async function migrateLocal(cloudItems) {
+// After sign-in: if items were saved on this device while signed out, ASK what to do with them. Never move them silently.
+var pendingLocal = [];
+function migrateLocal(cloudItems) {
   var local = localStore(), items = local.all();
-  if (!items.length) return;
   var have = {};
   cloudItems.forEach(function (x) { have[x.id] = true; });
-  try {
-    for (var i = 0; i < items.length; i++) if (!have[items[i].id]) await store.save(items[i]);
-    local.clear();
-    toast(t('t_migrated'));
-  } catch (e) { /* keep the device copy and try again next time */ }
+  var fresh = items.filter(function (x) { return !have[x.id]; });
+  if (!fresh.length) { if (items.length) local.clear(); return; }   // already in the account
+  pendingLocal = fresh;
+  $('#mergeText').textContent = t('merge_text', { n: fresh.length });
+  openDlg('mergeDlg');
 }
+$('#mergeAdd').addEventListener('click', async function () {
+  var b = $('#mergeAdd'); b.disabled = true;
+  try {
+    for (var i = 0; i < pendingLocal.length; i++) await store.save(pendingLocal[i]);
+    localStore().clear();
+    pendingLocal = [];
+    closeDlg('mergeDlg');
+    toast(t('t_migrated'));
+  } catch (e) { toast(t('t_saveerr')); }
+  finally { b.disabled = false; }
+});
+$('#mergeDelete').addEventListener('click', function () { localStore().clear(); pendingLocal = []; closeDlg('mergeDlg'); });
+$('#mergeLater').addEventListener('click', function () { closeDlg('mergeDlg'); });
 
 function renderAccount() {
   var btn = $('#acctBtn'), who = $('#who');
