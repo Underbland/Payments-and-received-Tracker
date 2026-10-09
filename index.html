@@ -27,14 +27,24 @@
     <span class="acct">
       <span class="who" id="who" hidden></span>
       <button class="btn sm" id="acctBtn" hidden></button>
-    <select id="currency" class="small" data-i18n-aria="currency" aria-label="Currency">
-      <option value="USD">USD ($)</option>
-      <option value="LAK">LAK (₭)</option>
-      <option value="THB">THB (฿)</option>
-      <option value="EUR">EUR (€)</option>
-      <option value="GBP">GBP (£)</option>
-      <option value="VND">VND (₫)</option>
-    </select>
+    </span>
+    <span class="currency">
+      <select id="currency" class="small" data-i18n-aria="currency" aria-label="Currency">
+        <option value="USD">$</option>
+        <option value="LAK">₭</option>
+        <option value="THB">฿</option>
+        <option value="EUR">€</option>
+        <option value="GBP">£</option>
+        <option value="VND">₫</option>
+        <option value="JPY">¥</option>
+        <option value="CAD">C$</option>
+        <option value="AUD">A$</option>
+        <option value="CNY">¥</option>
+        <option value="INR">₨</option>
+      </select>
+    </span>
+    <span class="goals">
+      <button class="btn sm" id="goalsBtn" data-i18n="goals">Goals</button>
     </span>
   </div>
 
@@ -50,8 +60,8 @@
     </div>
     <div class="bar-right">
       <span id="sortWrap" class="bar-right">
-        <label for="sort" data-i18n="order_by">Order by</label>
-        <select id="sort" class="small">
+        <label for="sort" data-i18n="order_by" class="visually-hidden">Order by</label>
+        <select id="sort" class="small" data-i18n-aria="order_by" aria-label="Sort by">
           <option value="priority" data-i18n="sort_priority">Priority</option>
           <option value="due" data-i18n="sort_due">Due date</option>
           <option value="amount" data-i18n="sort_amount">Amount</option>
@@ -70,13 +80,13 @@
   <form class="dlg" id="billForm" novalidate>
     <h2 id="billTitle"></h2>
     <div class="field">
-      <label for="fName" data-i18n="f_from">Bill from</label>
-      <input type="text" id="fName" maxlength="80" data-i18n-ph="f_from_ph">
+      <label for="fName" data-i18n="f_from" class="required">Bill from</label>
+      <input type="text" id="fName" maxlength="80" data-i18n-ph="f_from_ph" required>
     </div>
     <div class="row2">
       <div class="field">
-        <label for="fAmount" data-i18n="f_amount">Amount</label>
-        <input type="number" id="fAmount" min="0" step="any" inputmode="decimal">
+        <label for="fAmount" data-i18n="f_amount" class="required">Amount</label>
+        <input type="number" id="fAmount" min="0" step="any" inputmode="decimal" required>
       </div>
       <div class="field">
         <label for="fCat" data-i18n="f_cat">Category</label>
@@ -84,14 +94,30 @@
         <datalist id="cats"></datalist>
       </div>
     </div>
+    <div class="field">
+      <label for="fCurrency" data-i18n="Currency" class="required">Currency</label>
+      <select id="fCurrency" class="small" data-i18n-aria="currency" aria-label="Currency" required>
+        <option value="USD">USD ($)</option>
+        <option value="LAK">LAK (₭)</option>
+        <option value="THB">THB (฿)</option>
+        <option value="EUR">EUR (€)</option>
+        <option value="GBP">GBP (£)</option>
+        <option value="VND">VND (₫)</option>
+        <option value="JPY">JPY (¥)</option>
+        <option value="CAD">CAD (C$)</option>
+        <option value="AUD">AUD (A$)</option>
+        <option value="CNY">CNY (¥)</option>
+        <option value="INR">INR (₨)</option>
+      </select>
+    </div>
     <div class="row2">
       <div class="field">
-        <label for="fReceived" data-i18n="f_received">Received on</label>
-        <input type="date" id="fReceived">
+        <label for="fReceived" data-i18n="f_received" class="required">Received on</label>
+        <input type="date" id="fReceived" required>
       </div>
       <div class="field">
-        <label for="fDue" data-i18n="f_due">Due on</label>
-        <input type="date" id="fDue">
+        <label for="fDue" data-i18n="f_due" class="required">Due on</label>
+        <input type="date" id="fDue" required>
       </div>
     </div>
     <div class="field">
@@ -179,6 +205,27 @@
         <input type="number" id="xAmount" min="0" step="any" inputmode="decimal">
       </div>
     </div>
+    <div class="field">
+      <label for="xCurrency" data-i18n="f_currency">Currency</label>
+      <select id="xCurrency" class="small" data-i18n-aria="currency" aria-label="Currency">
+        <option value="USD">USD ($)</option>
+        <option value="LAK">LAK (₭)</option>
+        <option value="THB">THB (฿)</option>
+        <option value="EUR">EUR (€)</option>
+        <option value="GBP">GBP (£)</option>
+        <option value="VND">VND (₫)</option>
+        <option value="JPY">JPY (¥)</option>
+        <option value="CAD">CAD (C$)</option>
+        <option value="AUD">AUD (A$)</option>
+        <option value="CNY">CNY (¥)</option>
+        <option value="INR">INR (₨)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="xCat" data-i18n="f_cat">Category</label>
+      <input type="text" id="xCat" list="cats" maxlength="40">
+      <datalist id="cats"></datalist>
+    </div>
     <div class="row2">
       <div class="field">
         <label for="xBank" data-i18n="tx_bank">Bank app</label>
@@ -229,8 +276,91 @@
   </div>
 </dialog>
 
+<!-- Items saved on this device while signed out -->
+<dialog id="mergeDlg">
+  <div class="dlg">
+    <h2 data-i18n="merge_title">Saved on this device</h2>
+    <p class="meta" id="mergeText" style="margin:0 0 14px"></p>
+    <button type="button" class="btn primary signbtn" id="mergeAdd" data-i18n="merge_add">Add them to my account</button>
+    <button type="button" class="btn signbtn" id="mergeDelete" data-i18n="merge_delete">Delete them from this device</button>
+    <button type="button" class="btn signbtn" id="mergeLater" data-i18n="merge_later">Decide later</button>
+  </div>
+</dialog>
+
+<!-- Goals setting -->
+<dialog id="goalsDlg">
+  <form class="dlg" id="goalsForm" novalidate>
+    <h2 data-i18n="goals_title">Goals</h2>
+    <div class="field">
+      <label for="gMonthlyBudget" data-i18n="g_monthly_budget">Monthly Budget</label>
+      <input type="number" id="gMonthlyBudget" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="gBudgetCurrency" data-i18n="g_budget_currency">Currency</label>
+      <select id="gBudgetCurrency" class="small" data-i18n-aria="currency" aria-label="Currency">
+        <!-- options will be filled by JS -->
+      </select>
+    </div>
+    <div class="field">
+      <label for="gTargetDate" data-i18n="g_target_date">Target Date</label>
+      <input type="date" id="gTargetDate">
+    </div>
+    <div class="field">
+      <label for="gSavedAmount" data-i18n="g_saved_amount">Saved So Far</label>
+      <input type="number" id="gSavedAmount" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="gMonthlyNeeded" data-i18n="g_monthly_needed">Monthly Needed</label>
+      <input type="text" id="gMonthlyNeeded" readonly>
+    </div>
+    <hr>
+    <div class="field">
+      <label for="gConvertAmount" data-i18n="g_convert_amount">Amount</label>
+      <input type="number" id="gConvertAmount" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="gFromCurrency" data-i18n="g_from_currency">From</label>
+      <select id="gFromCurrency" class="small" data-i18n-aria="currency" aria-label="Currency">
+        <!-- options -->
+      </select>
+    </div>
+    <div class="field">
+      <label for="gToCurrency" data-i18n="g_to_currency">To</label>
+      <select id="gToCurrency" class="small" data-i18n-aria="currency" aria-label="Currency">
+        <!-- options -->
+      </select>
+    </div>
+    <div class="field">
+      <label for="gConvertedAmount" data-i18n="g_converted_amount">Converted</label>
+      <input type="text" id="gConvertedAmount" readonly>
+    </div>
+    <hr>
+    <div class="field">
+      <label for="gIncomeAmount" data-i18n="g_income_amount">Income Amount</label>
+      <input type="number" id="gIncomeAmount" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="gTaxRate" data-i18n="g_tax_rate">Tax Rate (%)</label>
+      <input type="number" id="gTaxRate" min="0" max="100" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="gTaxAmount" data-i18n="g_tax_amount">Tax Amount</label>
+      <input type="text" id="gTaxAmount" readonly>
+    </div>
+    <div class="field">
+      <label for="gNetAmount" data-i18n="g_net_amount">Net Amount</label>
+      <input type="text" id="gNetAmount" readonly>
+    </div>
+    <div class="dlg-actions">
+      <button type="button" class="btn" data-close="goalsDlg" data-i18n="cancel">Cancel</button>
+      <button type="submit" class="btn primary" data-i18n="goals_save">Save Goals</button>
+    </div>
+  </form>
+</dialog>
+
 <div class="toast" id="toast" role="status"></div>
 
 <script type="module" src="/src/main.js"></script>
+<button class="fab" id="fab" aria-label="Add money entry"></button>
 </body>
 </html>

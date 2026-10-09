@@ -1,7 +1,7 @@
 // All text shown in the app, in English and Lao. Edit here to fix or improve wording.
 export const T = {
   en: {
-    title: 'Bill tracker', language: 'Language', currency: 'Currency',
+    title: 'Bill tracker', language: 'Language', currency: 'Currency', goals: 'Goals',
     status_connecting: 'Connecting…', status_db: 'Saved to your account', status_local: 'Saved on this device only', status_error: 'Database unavailable',
     warn_local: 'Your received and paid bills will not be saved if you don\u2019t log in, or if you delete the app by mistake.',
     warn_error: 'Cannot reach the database right now. New changes may not be saved.',
@@ -41,10 +41,11 @@ export const T = {
   sign_in: 'Sign in', sign_out: 'Sign out', sign_title: 'Sign in', sign_hint: 'Sign in to keep your bills in your own account, so they are saved and available on your other devices.',
     sign_google: 'Continue with Google', sign_facebook: 'Continue with Facebook', sign_err: 'Could not sign in. Try again.', t_migrated: 'Bills from this device were added to your account.',
     t_added: 'Bill added', t_updated: 'Bill updated', t_paid: 'Marked as paid', t_unpaid: 'Moved back to To pay', t_entry_added: 'Entry added', t_entry_updated: 'Entry updated',
-    t_wait: 'Still connecting. Try again in a moment.', t_saveerr: 'Could not save that change. Check your connection and try again.', t_delerr: 'Could not delete that. Try again.', t_setterr: 'Could not save your settings.'
+    t_wait: 'Still connecting. Try again in a moment.', t_saveerr: 'Could not save that change. Check your connection and try again.', t_delerr: 'Could not delete that. Try again.', t_setterr: 'Could not save your settings.',
+    goals_title: 'Goals', g_monthly_budget: 'Monthly Budget', g_budget_currency: 'Currency', g_target_date: 'Target Date', g_saved_amount: 'Saved So Far', g_monthly_needed: 'Monthly Needed', g_convert_amount: 'Amount to Convert', g_from_currency: 'From Currency', g_to_currency: 'To Currency', g_converted_amount: 'Converted Amount', g_income_amount: 'Income Amount', g_tax_rate: 'Tax Rate (%)', g_tax_amount: 'Tax Amount', g_net_amount: 'Net Amount', goals_save: 'Save Goals',
   },
   lo: {
-    title: 'ຕິດຕາມໃບບິນ', language: 'ພາສາ', currency: 'ສະກຸນເງິນ',
+    title: 'ຕິດຕາມໃບບິນ', language: 'ພາສາ', currency: 'ສະກຸນເງິນ', goals: 'ຂອບໄປ່',
     status_connecting: 'ກຳລັງເຊື່ອມຕໍ່…', status_db: 'ບັນທຶກໃນບັນຊີຂອງທ່ານແລ້ວ', status_local: 'ບັນທຶກໃນອຸປະກອນນີ້ເທົ່ານັ້ນ', status_error: 'ຖານຂໍ້ມູນໃຊ້ບໍ່ໄດ້',
     warn_local: 'ໃບບິນທີ່ໄດ້ຮັບ ແລະ ທີ່ຈ່າຍແລ້ວ ຈະບໍ່ຖືກບັນທຶກ ຖ້າທ່ານບໍ່ເຂົ້າສູ່ລະບົບ ຫຼື ລຶບແອັບໂດຍບໍ່ຕັ້ງໃຈ.',
     warn_error: 'ຕອນນີ້ເຊື່ອມຕໍ່ຖານຂໍ້ມູນບໍ່ໄດ້. ການປ່ຽນແປງໃໝ່ອາດບໍ່ຖືກບັນທຶກ.',
@@ -84,7 +85,7 @@ export const T = {
   sign_in: 'ເຂົ້າສູ່ລະບົບ', sign_out: 'ອອກຈາກລະບົບ', sign_title: 'ເຂົ້າສູ່ລະບົບ', sign_hint: 'ເຂົ້າສູ່ລະບົບເພື່ອເກັບໃບບິນໄວ້ໃນບັນຊີຂອງທ່ານ ເພື່ອໃຫ້ຖືກບັນທຶກ ແລະ ໃຊ້ໄດ້ໃນອຸປະກອນອື່ນ.',
     sign_google: 'ສືບຕໍ່ດ້ວຍ Google', sign_facebook: 'ສືບຕໍ່ດ້ວຍ Facebook', sign_err: 'ເຂົ້າສູ່ລະບົບບໍ່ສຳເລັດ. ລອງໃໝ່.', t_migrated: 'ໃບບິນຈາກອຸປະກອນນີ້ຖືກເພີ່ມເຂົ້າບັນຊີຂອງທ່ານແລ້ວ.',
     t_added: 'ເພີ່ມໃບບິນແລ້ວ', t_updated: 'ອັບເດດໃບບິນແລ້ວ', t_paid: 'ໝາຍວ່າຈ່າຍແລ້ວ', t_unpaid: 'ຍ້ອນກັບໄປຕ້ອງຈ່າຍແລ້ວ', t_entry_added: 'ເພີ່ມລາຍການແລ້ວ', t_entry_updated: 'ອັບເດດລາຍການແລ້ວ',
-    t_wait: 'ກຳລັງເຊື່ອມຕໍ່ຢູ່. ລອງໃໝ່ອີກຄັ້ງ.', t_saveerr: 'ບັນທຶກບໍ່ສຳເລັດ. ກວດການເຊື່ອມຕໍ່ແລ້ວລອງໃໝ່.', t_delerr: 'ລຶບບໍ່ສຳເລັດ. ລອງໃໝ່.', t_setterr: 'ບັນທຶກການຕັ້ງຄ່າບໍ່ສຳເລັດ.'
+    t_wait: 'ກຳລັງເຊື່ອມຕໍ່ຢູ່. ລອງໃໝ່ອີກຄັ້ງ.', t_saveerr: 'ບັນທຶກບໍ່ສຳເລັດ. ກວດການເຊື່ອມຕໍ່ແລ້ວລອງໃໝ່.', t_delerr: 'ລຶບບໍ່ສຳເລັດ. ລອງໃໝ່.', t_setterr: 'ບັນທຶກການຕັ້ງຄ່າບໍ່ສຳເລັດ.', goals_title: 'ຂອບໄປ່', g_monthly_budget: 'ງົມປະຍາກົດລາຍເດືອນ', g_budget_currency: 'ສະກຸນເງິນ', g_target_date: 'ວັນທີ່ເປາຍ', g_saved_amount: 'ບັນທຶກແລ້ວ', g_monthly_needed: 'ຕ້ອງການລາຍເດືອນ', g_convert_amount: 'ຈຳນວນທີ່ກອງແປງ', g_from_currency: 'ສະກຸນເງິນທີ່ມາ', g_to_currency: 'ສະກຸນເງິນທີ່ຈາຍ', g_converted_amount: 'ຈຳນວນທີ່ກອງແປງແລ້ວ', g_income_amount: 'ຈຳນວນເງິນເຂົ້າ', g_tax_rate: 'ອັດສາດພາບ (%)', g_tax_amount: 'ພາບສົມ', g_net_amount: 'ຈຳນວນສຸດທາຍ', goals_save: 'ບັນທຶກຂອບໄປ່'
   }
 };
 export const CATS = {
